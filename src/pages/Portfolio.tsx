@@ -109,7 +109,7 @@ const Portfolio = () => {
                 className="rounded-lg shadow-2xl max-w-md mx-auto object-contain bg-gray-100"
                 loading="lazy"
                 decoding="async"
-                fetchpriority="low"
+                fetchPriority="low"
               />
             </motion.div>
           </div>
@@ -144,6 +144,7 @@ const Portfolio = () => {
               status="In Progress"
               icon={GraduationCap}
               index={0}
+              achievements={[]}
             />
 
             <TimelineItem

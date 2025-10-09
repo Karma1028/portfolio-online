@@ -50,6 +50,7 @@ const Skills = () => {
     }
   };
 
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 py-8 md:py-12">
       <div className="container mx-auto px-4 md:px-6 max-w-7xl">
@@ -94,7 +95,7 @@ const Skills = () => {
             <div>
               <div className="flex items-center gap-2 mb-3 md:mb-4">
                 <BarChart3 className="w-5 h-5 text-amber-600 dark:text-amber-500" />
-                <h3 className="text-lg md:text-xl font-bold text-amber-600 dark:text-amber-500">Core Proficiencies</h3>
+                <h3 className="text-lg md:text-xl font-bold text-amber-600 dark:text-amber-500 font-young-serif">Core Proficiencies</h3>
               </div>
               <div className="space-y-3 md:space-y-4">
                 {topSkills.map((skill, index) => (
@@ -109,19 +110,32 @@ const Skills = () => {
                     <div className="flex justify-between items-center mb-1">
                       <div className="flex items-center gap-2">
                         <Star className="w-3 h-3 text-amber-500 group-hover:scale-110 transition-transform" />
-                        <span className="font-semibold text-sm">{skill.name}</span>
+                        <span className="font-semibold text-sm font-bacley">{skill.name}</span>
                       </div>
                       <span className={`px-3 py-1 rounded-full text-xs font-bold text-white ${getLevelColor(skill.level)} shadow-sm`}>
                         {skill.level}
                       </span>
                     </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: skill.level === "Expert" ? "95%" : skill.level === "Advanced" ? "80%" : "65%" }}
-                        transition={{ delay: index * 0.1 + 0.3, duration: 0.8 }}
-                        className={`h-full rounded-full ${skill.level === "Expert" ? "bg-green-500" : skill.level === "Advanced" ? "bg-amber-500" : "bg-blue-500"}`}
-                      />
+                    
+                    {/* Visual Proficiency Representation */}
+                    <div className="flex items-center gap-1 mb-1">
+                      {Array.from({ length: 5 }, (_, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: index * 0.1 + i * 0.1 }}
+                          className={`w-2 h-2 rounded-full ${
+                            i < (skill.level === "Expert" ? 5 : skill.level === "Advanced" ? 4 : 3)
+                              ? skill.level === "Expert" 
+                                ? "bg-green-500" 
+                                : skill.level === "Advanced" 
+                                ? "bg-amber-500" 
+                                : "bg-blue-500"
+                              : "bg-gray-300 dark:bg-gray-600"
+                          }`}
+                        />
+                      ))}
                     </div>
                   </motion.div>
                 ))}
@@ -131,7 +145,7 @@ const Skills = () => {
             <div className="pt-4 border-t-2 border-amber-200 dark:border-amber-800">
               <div className="flex items-center gap-2 mb-2">
                 <Zap className="w-4 h-4 text-amber-600 dark:text-amber-500" />
-                <h4 className="text-sm font-bold">Additional Expertise</h4>
+                <h4 className="text-sm font-bold font-red-bright">Additional Expertise</h4>
               </div>
               <div className="flex flex-wrap gap-2">
                 {[

@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 export function Spotlight({
   className,
   size = 200,
+  fill = "white",
 }: {
   className?: string;
   size?: number;
