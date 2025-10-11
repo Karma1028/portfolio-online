@@ -26,21 +26,17 @@ const Projects = () => {
       id: 5,
       title: "This Portfolio Website",
       company: "Self-initiated • built with Vive Coding",
-      duration: "2024 - 2025",
+      duration: "2024–2025",
       thumbnail: "/og-image.png",
-      shortDescription: "High-performance, animated React + Vite portfolio with shadcn/ui and Tailwind. Showcases journey, projects, and photography with a design-first narrative.",
-      fullDescription: "Designed and engineered a modern portfolio to narrate my transition from Chemical Engineering to Data Analytics. Built with React + TypeScript, Vite, Tailwind CSS, and Framer Motion. Implemented custom fonts, floating navigation, animated hero, interactive Skills and Projects, an optimized Gallery with focus and lightbox effects, and a clean documentation system. Co-built and iterated with Vive Coding to refine UX, tone, and performance.",
+      shortDescription: "Designed and launched a recruiter-focused digital portfolio to showcase my transition from Chemical Engineering to Data Analytics. Built with React + TypeScript, Vite, Tailwind and Framer Motion.",
+      fullDescription: "Designed and launched a recruiter-focused digital portfolio to showcase my transition from Chemical Engineering to Data Analytics. Built with React + TypeScript, Vite, Tailwind and Framer Motion. I created the first drafts using bolt.new, refined visuals in lovable.ai, edited and formatted exports with Cursor AI (using dev.v0 prompts), pushed changes through a GitHub export/ZIP, and deployed the final site on Netlify. I authored all copy, selected and edited images, and handled the final site delivery.",
       achievements: [
-        "Achieved 95+ Lighthouse Performance on desktop, 90+ on mobile",
-        "Reduced initial bundle size by 32% via code-splitting and optimized imports",
-        "Optimized image pipeline: lazy loading, GPU-accelerated transforms, responsive sizing",
-        "Implemented 20+ micro-interactions using Framer Motion for a premium feel",
-        "Built reusable UI primitives with shadcn/ui and custom variants for consistency",
-        "Introduced font system with 8+ custom faces and semantic Tailwind utilities",
-        "Deployed to Netlify with automated previews and cache-friendly headers",
+        "Turned generative front-end drafts into a polished, deployable React portfolio (bolt.new → lovable.ai → Cursor AI → GitHub → Netlify)",
+        "Built an optimized gallery (responsive images, lazy-loading and a 6-image rotating preview) and applied targeted front-end edits to keep the site visually rich but light-weight",
+        "Managed end-to-end delivery without paid subscriptions (used free APIs and free-tier platform features) and solved hosting limits by deploying on Netlify",
       ],
-      technologies: ["React", "TypeScript", "Vite", "Tailwind CSS", "Framer Motion", "shadcn/ui", "Netlify"],
-      impact: "Professional narrative site that increased recruiter engagement (avg. session time +48%, bounce rate -27%) and consolidated work samples, story, and achievements in one performant experience."
+      technologies: ["React", "TypeScript", "Vite", "Tailwind CSS", "Framer Motion", "Netlify", "bolt.new", "lovable.ai", "Cursor AI (dev.v0 prompts)"],
+      impact: "Professional narrative site that showcases my transition journey and technical capabilities while demonstrating proficiency with modern AI-assisted development workflows."
     },
     {
       id: 1,
@@ -184,7 +180,7 @@ const Projects = () => {
                     <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3 mb-4 leading-relaxed">
                       {project.id === 5 ? (
                         <>
-                          High-performance, animated <span className="font-bold text-foreground">React + Vite portfolio</span> with <span className="font-bold text-foreground">shadcn/ui and Tailwind</span>. Showcases journey, projects, and photography with a <span className="font-bold text-foreground">design-first narrative</span>.
+                          Designed and launched a <span className="font-bold text-foreground">recruiter-focused digital portfolio</span> to showcase my transition from <span className="font-bold text-foreground">Chemical Engineering to Data Analytics</span>. Built with <span className="font-bold text-foreground">React + TypeScript, Vite, Tailwind and Framer Motion</span>.
                         </>
                       ) : (
                         project.shortDescription
@@ -247,7 +243,7 @@ const Projects = () => {
                     <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
                       {selectedProject.id === 5 ? (
                         <>
-                          Designed and engineered a modern portfolio to narrate my transition from <span className="font-bold text-foreground">Chemical Engineering to Data Analytics</span>. Built with <span className="font-bold text-foreground">React + TypeScript, Vite, Tailwind CSS, and Framer Motion</span>. Implemented custom fonts, floating navigation, animated hero, interactive Skills and Projects, an optimized Gallery with focus and lightbox effects, and a clean documentation system. Co-built and iterated with <span className="font-bold text-foreground">Vive Coding</span> to refine UX, tone, and performance.
+                          Designed and launched a recruiter-focused digital portfolio to showcase my transition from <span className="font-bold text-foreground">Chemical Engineering to Data Analytics</span>. Built with <span className="font-bold text-foreground">React + TypeScript, Vite, Tailwind and Framer Motion</span>. I created the first drafts using <span className="font-bold text-foreground">bolt.new</span>, refined visuals in <span className="font-bold text-foreground">lovable.ai</span>, edited and formatted exports with <span className="font-bold text-foreground">Cursor AI (using dev.v0 prompts)</span>, pushed changes through a GitHub export/ZIP, and deployed the final site on <span className="font-bold text-foreground">Netlify</span>. I authored all copy, selected and edited images, and handled the final site delivery.
                         </>
                       ) : (
                         selectedProject.fullDescription

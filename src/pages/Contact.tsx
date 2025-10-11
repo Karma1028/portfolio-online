@@ -36,8 +36,8 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Location",
-      content: "Goa, India",
-      link: "https://maps.google.com/?q=Goa,India"
+      content: "Goa Institute of Management, Sanquelim, Goa",
+      link: "https://gim.ac.in"
     }
   ];
 
@@ -59,7 +59,7 @@ const Contact = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 py-8 md:py-12">
+    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 pt-20 md:pt-24 pb-8 md:pb-12">
       <div className="container mx-auto max-w-6xl px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -67,7 +67,7 @@ const Contact = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-8 md:mb-12"
         >
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-yellow-500">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-yellow-500 font-amanojaku">
             Get In Touch
           </h1>
           <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">

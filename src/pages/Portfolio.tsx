@@ -138,7 +138,7 @@ const Portfolio = () => {
             <TimelineItem
               year="2025 - 2027"
               title="PGDM - Big Data Analytics"
-              institution="Goa Institute of Management, Goa"
+              institution="Goa Institute of Management, Sanquelim, Goa"
               description="Pursuing advanced studies in Big Data Analytics, focusing on business intelligence, data engineering, and analytics product development."
               type="education"
               status="In Progress"

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 type GalleryImage = {
   src: string;
   title?: string;
+  loaded?: boolean;
 };
 
 // Gallery images from public/Gallery folder
@@ -53,6 +54,7 @@ const INITIAL_DISPLAY = 6; // Show 6 images initially for faster loading
 const ROTATION_INTERVAL = 10000; // 10 seconds hold time
 const TRANSITION_DURATION = 3000; // 3 seconds transition
 const LAZY_LOAD_THRESHOLD = 3; // Load more images when 3 images from bottom
+const PRELOAD_COUNT = 3; // Number of images to preload
 
 function shuffleArray<T>(array: T[]): T[] {
   const newArray = [...array];
@@ -63,11 +65,104 @@ function shuffleArray<T>(array: T[]): T[] {
   return newArray;
 }
 
+// Image preloader utility
+const preloadImage = (src: string): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve();
+    img.onerror = reject;
+    img.src = src;
+  });
+};
+
+// Lazy loading hook with Intersection Observer
+const useLazyLoad = (ref: React.RefObject<HTMLElement>, options = {}) => {
+  const [isIntersecting, setIsIntersecting] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsIntersecting(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px',
+        ...options
+      }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [ref, options]);
+
+  return isIntersecting;
+};
+
+// Optimized Image Component
+const OptimizedImage = ({ src, alt, className, style, onClick, onMouseEnter, onMouseLeave }: {
+  src: string;
+  alt: string;
+  className?: string;
+  style?: React.CSSProperties;
+  onClick?: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+}) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const isIntersecting = useLazyLoad(imgRef);
+
+  useEffect(() => {
+    if (isIntersecting && !isLoaded && !hasError) {
+      const img = new Image();
+      img.onload = () => setIsLoaded(true);
+      img.onerror = () => setHasError(true);
+      img.src = src;
+    }
+  }, [isIntersecting, src, isLoaded, hasError]);
+
+  return (
+    <div ref={imgRef} className={className} style={style} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      {isIntersecting && isLoaded && !hasError ? (
+        <img
+          src={src}
+          alt={alt}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          loading="lazy"
+          decoding="async"
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+        />
+      ) : (
+        <div 
+          className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 flex items-center justify-center"
+          style={{ 
+            background: 'linear-gradient(45deg, #f0f0f0 25%, transparent 25%), linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f0f0f0 75%), linear-gradient(-45deg, transparent 75%, #f0f0f0 75%)',
+            backgroundSize: '20px 20px',
+            backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
+          }}
+        >
+          {isIntersecting && !hasError && (
+            <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Gallery = () => {
   const [allImages, setAllImages] = useState<GalleryImage[]>([]);
   const [displayedImages, setDisplayedImages] = useState<GalleryImage[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [preloadedImages, setPreloadedImages] = useState<Set<string>>(new Set());
   const rotationTimerRef = useRef<NodeJS.Timeout>();
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState<number | null>(null);
@@ -78,13 +173,25 @@ const Gallery = () => {
     const images: GalleryImage[] = ALL_IMAGES.map((filename) => ({
       src: `${GALLERY_FOLDER}/${filename}`,
       title: filename,
+      loaded: false,
     }));
     setAllImages(images);
     
     // Initial display - select random 6 images for faster loading
     const shuffled = shuffleArray(images);
-    setDisplayedImages(shuffled.slice(0, INITIAL_DISPLAY));
-    setIsLoading(false);
+    const initialImages = shuffled.slice(0, INITIAL_DISPLAY);
+    setDisplayedImages(initialImages);
+    
+    // Preload initial images
+    const preloadPromises = initialImages.map(img => preloadImage(img.src));
+    Promise.all(preloadPromises)
+      .then(() => {
+        setPreloadedImages(new Set(initialImages.map(img => img.src)));
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   // Lazy load more images when scrolling
@@ -94,12 +201,23 @@ const Gallery = () => {
         const currentCount = displayedImages.length;
         if (currentCount < allImages.length) {
           const moreImages = allImages.slice(currentCount, currentCount + 6);
-          setDisplayedImages(prev => [...prev, ...moreImages]);
+          
+          // Preload the new images before adding them to display
+          const preloadPromises = moreImages.map(img => preloadImage(img.src));
+          Promise.all(preloadPromises)
+            .then(() => {
+              setPreloadedImages(prev => new Set([...prev, ...moreImages.map(img => img.src)]));
+              setDisplayedImages(prev => [...prev, ...moreImages]);
+            })
+            .catch(() => {
+              // Still add images even if preloading fails
+              setDisplayedImages(prev => [...prev, ...moreImages]);
+            });
         }
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isExpanded, displayedImages.length, allImages]);
 
@@ -141,16 +259,27 @@ const Gallery = () => {
     };
   }, [isExpanded, displayedImages.length, allImages]);
 
-  const handleLoadMore = () => {
+  const handleLoadMore = useCallback(() => {
     // Preserve current order, append the remaining images in their existing order
     setIsExpanded(true);
     setDisplayedImages((current) => {
       if (current.length === 0) return allImages;
       const currentSrcs = new Set(current.map((img) => img.src));
       const remaining = allImages.filter((img) => !currentSrcs.has(img.src));
+      
+      // Preload remaining images
+      const preloadPromises = remaining.map(img => preloadImage(img.src));
+      Promise.all(preloadPromises)
+        .then(() => {
+          setPreloadedImages(prev => new Set([...prev, ...remaining.map(img => img.src)]));
+        })
+        .catch(() => {
+          // Continue even if preloading fails
+        });
+      
       return [...current, ...remaining];
     });
-  };
+  }, [allImages]);
 
   const imagesToShow = isExpanded ? displayedImages : displayedImages;
 
@@ -204,7 +333,7 @@ const Gallery = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-secondary/10 to-background px-4 sm:px-6 md:px-8 py-8 md:py-12">
+    <div className="min-h-screen bg-gradient-to-b from-background via-secondary/10 to-background px-4 sm:px-6 md:px-8 pt-20 md:pt-24 pb-8 md:pb-12">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <motion.div
@@ -213,7 +342,7 @@ const Gallery = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-8 md:mb-12"
         >
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-foreground to-muted-foreground">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-yellow-500 font-amanojaku">
             Visual Stories
           </h1>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -267,18 +396,13 @@ const Gallery = () => {
                     onMouseEnter={() => setHoveredIndex(idx)}
                     onMouseLeave={() => setHoveredIndex(null)}
                   >
-                    <img
+                    <OptimizedImage
                       src={img.src}
                       alt={img.title ?? `Gallery ${idx + 1}`}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      loading="lazy"
-                      decoding="async"
-                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                      style={{ 
-                        background: 'linear-gradient(45deg, #f0f0f0 25%, transparent 25%), linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f0f0f0 75%), linear-gradient(-45deg, transparent 75%, #f0f0f0 75%)',
-                        backgroundSize: '20px 20px',
-                        backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
-                      }}
+                      className="w-full h-full"
+                      onClick={() => openLightbox(idx)}
+                      onMouseEnter={() => setHoveredIndex(idx)}
+                      onMouseLeave={() => setHoveredIndex(null)}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </motion.div>
@@ -320,12 +444,13 @@ const Gallery = () => {
                   onMouseEnter={() => setHoveredIndex(idx)}
                   onMouseLeave={() => setHoveredIndex(null)}
                 >
-                  <img
+                  <OptimizedImage
                     src={img.src}
                     alt={img.title ?? `Gallery ${idx + 1}`}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    loading="lazy"
-                    decoding="async"
+                    className="w-full h-full"
+                    onClick={() => openLightbox(idx)}
+                    onMouseEnter={() => setHoveredIndex(idx)}
+                    onMouseLeave={() => setHoveredIndex(null)}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </motion.div>

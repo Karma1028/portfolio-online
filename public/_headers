@@ -4,3 +4,25 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
+/Gallery/*
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: image/jpeg
+
+/Font/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: image/jpeg
+
+/*.jpeg
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: image/jpeg
+
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: image/png
+
+/*.webp
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: image/webp

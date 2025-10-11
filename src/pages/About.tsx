@@ -266,7 +266,7 @@ const About = () => {
                 transition={{ delay: 0.8 }}
                 className="text-muted-foreground text-sm md:text-base leading-relaxed font-young-serif"
               >
-                Now at <span className="text-foreground font-semibold">Goa Institute of Management</span>, I'm sharpening the craft—learning how to architect data products that scale, tell stories, and drive real impact. Because the best analytics don't just answer questions; <span className="text-accent font-semibold italic">they change how people think</span>.
+                Now at <a href="https://gim.ac.in" target="_blank" rel="noopener noreferrer" className="text-foreground font-semibold hover:text-accent underline decoration-foreground/50 hover:decoration-accent transition-all duration-200">Goa Institute of Management</a>, I'm sharpening the craft—learning how to architect data products that scale, tell stories, and drive real impact. Because the best analytics don't just answer questions; <span className="text-accent font-semibold italic">they change how people think</span>.
               </motion.p>
 
               <motion.div
@@ -343,7 +343,7 @@ const About = () => {
 
               <p className="text-lg">
                 <span className="text-xl font-bold text-foreground block mb-3 font-amanojaku">Chapter 3: Sharpening the Craft</span>
-                Now I'm at <span className="text-accent font-bold">Goa Institute of Management</span>, pursuing a <span className="font-bold text-foreground">PGDM in Big Data Analytics</span>. I'm learning to architect data products that don't just solve today's problems—they <span className="font-bold text-foreground">scale with tomorrow's ambitions</span>. Business intelligence, data engineering, analytics product development—I'm building the <span className="font-bold text-foreground">toolkit to create systems that matter</span>.
+                Now I'm at <a href="https://gim.ac.in" target="_blank" rel="noopener noreferrer" className="text-accent font-bold hover:text-accent/80 underline decoration-accent/50 hover:decoration-accent transition-all duration-200">Goa Institute of Management</a>, pursuing a <span className="font-bold text-foreground">PGDM in Big Data Analytics</span>. I'm learning to architect data products that don't just solve today's problems—they <span className="font-bold text-foreground">scale with tomorrow's ambitions</span>. Business intelligence, data engineering, analytics product development—I'm building the <span className="font-bold text-foreground">toolkit to create systems that matter</span>.
               </p>
               
               <div className="bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 rounded-r-xl p-4 my-4">
@@ -377,7 +377,7 @@ const About = () => {
                 </div>
                 <div className="bg-muted/30 rounded-lg p-4 border border-border">
                   <p className="font-semibold text-foreground mb-2">Operator Mentality</p>
-                  <p className="text-sm">Bias for execution, reproducible systems, long-term maintainability</p>
+                  <p className="text-sm">Prioritize execution; build reproducible analytics systems and maintainable BI solutions</p>
                 </div>
                 <div className="bg-muted/30 rounded-lg p-4 border border-border">
                   <p className="font-semibold text-foreground mb-2">Communication</p>

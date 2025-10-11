@@ -11,7 +11,7 @@ const Journey = () => {
     {
       year: "2025 - 2027",
       title: "PGDM - Big Data Analytics",
-      institution: "Goa Institute of Management, Goa",
+      institution: "Goa Institute of Management, Sanquelim, Goa",
       description: "Pursuing advanced studies in Big Data Analytics, focusing on business intelligence, data engineering, and analytics product development.",
       image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2940&auto=format&fit=crop",
       achievement: "Pursuing",
