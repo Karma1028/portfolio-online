@@ -27,6 +27,95 @@
   font-display: swap;
 }
 
+/* New fonts */
+@font-face {
+  font-family: 'Agitha';
+  src: url('/Font/agitha/Agitha.otf') format('opentype'), url('/Font/agitha/Agitha.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Eagle Horizon';
+  src: url('/Font/eagle-horizon-personal-use/EagleHorizonP.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rebok';
+  src: url('/Font/rebok/Rebok.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rillosta';
+  src: url('/Font/rillosta/Rillosta.otf') format('opentype'), url('/Font/rillosta/Rillosta.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'White Chalk';
+  src: url('/Font/white-chalk/White Chalk.otf') format('opentype'), url('/Font/white-chalk/White Chalk.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Young Serif additional weights */
+@font-face {
+  font-family: 'Young Serif';
+  src: url('/Font/youngserif/YoungSerif-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Young Serif';
+  src: url('/Font/youngserif/YoungSerif-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Young Serif';
+  src: url('/Font/youngserif/YoungSerif-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* New fonts for body and subheadings */
+@font-face {
+  font-family: 'Architext';
+  src: url('/Font/architext (1)/Architex.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Autumn Brush';
+  src: url('/Font/autumn-brush/Autumn Brush.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Amanojaku';
+  src: url('/Font/amanojaku/Amanojaku Demo.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -126,6 +215,8 @@
 
   body {
     @apply bg-background text-foreground overflow-x-hidden;
+    font-family: 'Architext', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 400;
   }
 
   /* Prevent scrolling on landing page */

@@ -34,18 +34,18 @@ const Skills = () => {
   ];
 
   const topSkills = [
-    { name: "Microsoft Power BI", level: "Expert" },
-    { name: "SQL", level: "Advanced" },
-    { name: "DAX", level: "Expert" },
-    { name: "MS Excel", level: "Advanced" },
-    { name: "Python", level: "Intermediate" }
+    { name: "Microsoft Power BI", level: "Advanced" },
+    { name: "SQL", level: "Intermediate" },
+    { name: "DAX", level: "Advanced" },
+    { name: "MS Excel", level: "Intermediate" },
+    { name: "Python", level: "Beginner" }
   ];
 
   const getLevelColor = (level: string) => {
     switch (level) {
-      case "Expert": return "bg-gradient-to-r from-green-500 to-emerald-600";
-      case "Advanced": return "bg-gradient-to-r from-amber-500 to-orange-600";
-      case "Intermediate": return "bg-gradient-to-r from-blue-500 to-cyan-600";
+      case "Advanced": return "bg-gradient-to-r from-green-500 to-emerald-600";
+      case "Intermediate": return "bg-gradient-to-r from-amber-500 to-orange-600";
+      case "Beginner": return "bg-gradient-to-r from-blue-500 to-cyan-600";
       default: return "bg-gray-500";
     }
   };
@@ -61,7 +61,7 @@ const Skills = () => {
               <div className="absolute inset-x-0 top-4 md:top-8 z-10">
                 <MorphingText
                   texts={["Core Competencies", "Technical Skills", "Tools & Technologies"]}
-                  className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-8 px-4"
+                  className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-8 px-4 font-amanojaku"
                 />
               </div>
               {skills.map((skill, idx) => (
@@ -88,54 +88,40 @@ const Skills = () => {
           </div>
 
           <motion.div
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="bg-gradient-to-br from-white to-amber-50 dark:from-gray-900 dark:to-amber-950 rounded-lg p-4 md:p-6 shadow-xl cursor-pointer h-[40vh] flex flex-col justify-between border-2 border-amber-100 dark:border-amber-900"
+            className="bg-gradient-to-br from-white to-amber-50 dark:from-gray-900 dark:to-amber-950 rounded-lg p-4 md:p-6 shadow-xl h-[40vh] flex flex-col justify-between border-2 border-amber-100 dark:border-amber-900"
           >
             <div>
-              <div className="flex items-center gap-2 mb-3 md:mb-4">
+              <div className="flex items-center gap-2 mb-4 md:mb-6">
                 <BarChart3 className="w-5 h-5 text-amber-600 dark:text-amber-500" />
-                <h3 className="text-lg md:text-xl font-bold text-amber-600 dark:text-amber-500 font-young-serif">Core Proficiencies</h3>
+                <h3 className="text-lg md:text-xl font-bold text-amber-600 dark:text-amber-500 font-autumn-brush">Core Proficiencies</h3>
               </div>
-              <div className="space-y-3 md:space-y-4">
+              <div className="space-y-3">
                 {topSkills.map((skill, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    whileHover={{ x: 5 }}
+                    transition={{ delay: index * 0.1, type: "spring" }}
                     className="group"
                   >
-                    <div className="flex justify-between items-center mb-1">
+                    <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center gap-2">
-                        <Star className="w-3 h-3 text-amber-500 group-hover:scale-110 transition-transform" />
-                        <span className="font-semibold text-sm font-bacley">{skill.name}</span>
+                        <Star className="w-3.5 h-3.5 text-amber-500" />
+                        <span className="font-semibold text-sm">{skill.name}</span>
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-xs font-bold text-white ${getLevelColor(skill.level)} shadow-sm`}>
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold text-white ${getLevelColor(skill.level)}`}>
                         {skill.level}
                       </span>
                     </div>
-                    
-                    {/* Visual Proficiency Representation */}
-                    <div className="flex items-center gap-1 mb-1">
-                      {Array.from({ length: 5 }, (_, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ delay: index * 0.1 + i * 0.1 }}
-                          className={`w-2 h-2 rounded-full ${
-                            i < (skill.level === "Expert" ? 5 : skill.level === "Advanced" ? 4 : 3)
-                              ? skill.level === "Expert" 
-                                ? "bg-green-500" 
-                                : skill.level === "Advanced" 
-                                ? "bg-amber-500" 
-                                : "bg-blue-500"
-                              : "bg-gray-300 dark:bg-gray-600"
-                          }`}
-                        />
-                      ))}
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+                      <motion.div
+                        className={`h-full rounded-full ${getLevelColor(skill.level)}`}
+                        initial={{ width: 0 }}
+                        animate={{ 
+                          width: `${(skill.level === "Advanced" ? 100 : skill.level === "Intermediate" ? 80 : 60)}%` 
+                        }}
+                        transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
+                      />
                     </div>
                   </motion.div>
                 ))}
@@ -145,7 +131,7 @@ const Skills = () => {
             <div className="pt-4 border-t-2 border-amber-200 dark:border-amber-800">
               <div className="flex items-center gap-2 mb-2">
                 <Zap className="w-4 h-4 text-amber-600 dark:text-amber-500" />
-                <h4 className="text-sm font-bold font-red-bright">Additional Expertise</h4>
+                <h4 className="text-sm font-bold font-autumn-brush">Additional Expertise</h4>
               </div>
               <div className="flex flex-wrap gap-2">
                 {[
@@ -158,6 +144,9 @@ const Skills = () => {
                 ].map((expertise, idx) => (
                   <motion.span
                     key={idx}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 + idx * 0.08 }}
                     whileHover={{ scale: 1.05, y: -2 }}
                     className="px-3 py-1 bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900 dark:to-orange-900 text-amber-800 dark:text-amber-200 rounded-full text-xs font-semibold border border-amber-200 dark:border-amber-800 cursor-default shadow-sm"
                   >

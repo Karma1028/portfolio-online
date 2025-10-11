@@ -72,7 +72,7 @@ const Journey = () => {
             texts={["My Journey", "My Path", "My Story", "My Experience"]}
             morphTime={1}
             cooldownTime={0.25}
-            className="h-[80px] md:h-[100px] flex items-center justify-center font-bold mb-6"
+            className="h-[80px] md:h-[100px] flex items-center justify-center font-bold mb-6 font-amanojaku"
             textClassName="bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-yellow-500"
           />
         </div>
@@ -81,11 +81,12 @@ const Journey = () => {
           <VelocityScroll
             text="EDUCATION & CAREER JOURNEY THROUGH THE YEARS"
             default_velocity={3}
-            className="text-2xl md:text-4xl font-bold text-neutral-800 dark:text-neutral-200"
+            className="text-2xl md:text-4xl font-bold text-neutral-800 dark:text-neutral-200 font-amanojaku"
           />
         </div>
 
-        <div className="max-w-6xl mx-auto">
+
+        <div className="w-full max-w-6xl mx-auto">
           <div className="relative">
             {/* Timeline line */}
             <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-500 via-orange-400 to-orange-300 rounded-full hidden md:block"></div>
@@ -141,7 +142,7 @@ const Journey = () => {
                                 )}
                               </div>
                               <div className="flex-1">
-                                <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                                <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2 font-amanojaku">
                                   {item.title}
                                 </h3>
                                 <div className="flex items-center gap-2 mb-3">
@@ -158,7 +159,7 @@ const Journey = () => {
                             </div>
                           </div>
 
-                          <p className="text-base lg:text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                          <p className="text-lg lg:text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-6 font-young-serif">
                             {item.description}
                           </p>
 
@@ -166,7 +167,7 @@ const Journey = () => {
                             <div className="border-l-4 border-orange-500 pl-6 py-4 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-r-xl mb-4">
                               <div className="flex items-start gap-3">
                                 <CheckCircle className="w-5 h-5 text-orange-600 dark:text-orange-400 mt-0.5 flex-shrink-0" />
-                                <p className="text-sm lg:text-base text-gray-700 dark:text-gray-300 font-semibold">
+                                <p className="text-base lg:text-lg text-gray-700 dark:text-gray-300 font-semibold font-young-serif">
                                   {item.highlight}
                                 </p>
                               </div>

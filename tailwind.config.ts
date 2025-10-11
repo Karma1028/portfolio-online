@@ -20,8 +20,17 @@ export default {
     extend: {
       fontFamily: {
         'bacley': ['Bacley Demo', 'cursive'],
-        'young-serif': ['Young Serif Bold', 'serif'],
+        'young-serif': ['Young Serif', 'serif'],
+        'young-serif-bold': ['Young Serif Bold', 'serif'],
         'red-bright': ['Red Bright Demo', 'sans-serif'],
+        'agitha': ['Agitha', 'cursive'],
+        'eagle-horizon': ['Eagle Horizon', 'sans-serif'],
+        'rebok': ['Rebok', 'sans-serif'],
+        'rillosta': ['Rillosta', 'serif'],
+        'white-chalk': ['White Chalk', 'cursive'],
+        'architext': ['Architext', 'sans-serif'],
+        'autumn-brush': ['Autumn Brush', 'cursive'],
+        'amanojaku': ['Amanojaku', 'cursive'],
       },
       colors: {
         border: "hsl(var(--border))",

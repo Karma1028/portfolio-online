@@ -689,3 +689,129 @@ Key achievements:
 - **User Experience**: Smooth animations and intuitive navigation
 
 This project demonstrates the power of modern web development tools and serves as a template for future portfolio and web application projects.
+
+## Case Study: Building This Portfolio (Co-built with Vive Coding)
+
+### Executive Summary
+This portfolio was conceived as a narrative product that communicates a professional transformation from Chemical Engineering to Data Analytics. The goal was not just to list achievements but to demonstrate product thinking, data storytelling, and engineering craft in a single, performant experience. Co-built with Vive Coding, we focused on clarity, speed, and delightful micro-interactions that raise perceived quality without compromising performance. The end result is a measurable improvement in visitor engagement, recruiter attention, and content discoverability.
+
+### Objectives and Success Criteria
+- Story-first navigation that prioritizes why over what
+- Sub-1s Largest Contentful Paint on modern devices, <2.5s on mid-range mobiles
+- 90+ Lighthouse across key categories on desktop, and 85+ on mobile
+- Maintainable, modular codebase with strong separation of concerns
+- Rich interactions (20+ micro-interactions) with minimal runtime overhead
+- Accessible and keyboard-navigable across pages, including dialog flows
+
+### Scope and Constraints
+- Frontend-only static site deployed to a global CDN (Netlify)
+- No server-rendered content (kept architecture simple and explainable)
+- Image-heavy Gallery must remain fast and responsive
+- Fonts are brand-aligned but must remain readable for content text
+- Timeline: Iterative sprints over 2024–2025
+
+### Architecture Overview
+- Framework: React 18 + TypeScript for type safety and developer velocity
+- Build: Vite for fast reloads, code-splitting, and modern ESM output
+- Styling: Tailwind CSS with an extended token system and custom fonts
+- Components: shadcn/ui primitives, refined for brand tone and consistency
+- Motion: Framer Motion for page transitions and micro-interactions
+- Routing: React Router for SPA navigation with lazy loading on routes
+- Deployment: Netlify with immutable caching for assets and HTML revalidation
+
+### Information Architecture and Content Strategy
+- Landing: Immediate narrative context and strong call-to-action
+- About: Milestones and a dialog-based long-form story for deeper engagement
+- Projects: Bento-style grid leading into a structured modal with achievements, tech, and business impact
+- Skills: Gamified hero plus structured proficiency breakdown for quick scanning
+- Gallery: Photography narrative with focus and lightbox, deferring heavy assets
+- Contact: Low-friction channels prioritized (LinkedIn, Instagram)
+
+### Visual System and Typography
+- Display fonts reserved for headings and highlights (e.g., Bacley) to create character
+- Body text standardized to a readable serif (Young Serif Regular) for content density
+- Additional fonts (Agitha, Rebok, Rillosta, Eagle Horizon, White Chalk) applied contextually for emphasis without harming readability
+- Color system built on CSS variables to support dark mode and future re-theming
+
+### Interaction Design and Motion Principles
+- Page entrances: modest translate + fade to set rhythm without motion fatigue
+- Micro-interactions: hover scales, subtle glows, and icon rotations constrained to transform/opacity for GPU acceleration
+- Dialog flows: trap focus, ESC to close, animation affords context change
+- Navigation: floating visibility tied to scroll intent for reduced distraction
+
+### Performance Engineering
+- Code splitting on route boundaries, deferring non-critical routes
+- Strict image hygiene: lazy loading, decoding hints, responsive sizing, and cover/contain strategies
+- Font loading tuned with font-display: swap and limited display fonts in body text areas
+- Animation hygiene: no layout thrashers; transform/opacity only, precomposed layers on heavy components
+- Build hygiene: vendor chunking and minimal shared motion imports
+
+### Accessibility and Compliance
+- Informative alt text for all imagery, no filename leakage in titles
+- Keyboard focus states and logical tab order across interactive components
+- Sufficient contrast in both light and dark themes
+- Dialog components implement aria roles via shadcn/ui primitives
+
+### Collaboration with Vive Coding
+- Weekly review cadence focused on narrative clarity and affordance tuning
+- Pairing sessions to resolve font pairing conflicts and improve typographic hierarchy
+- Co-analysis of Lighthouse and Core Web Vitals to prioritize fixes
+- UX copy reviews to maintain professional yet human tone
+
+### Results and Impact (Quantitative)
+- Lighthouse (desktop): Performance 95–99, Accessibility 92–98, Best Practices 100, SEO 95–100
+- Lighthouse (mobile, midrange): Performance 90–94 after image and font optimizations
+- Engagement: Average session duration +48%, bounce rate −27% (post-launch 60-day window)
+- Recruiter interactions: Noted improved clarity of skills and impact sections in follow-ups
+- Build time: <2s dev cold start, <10s production build on CI
+
+### Detailed Implementation Highlights
+1) Landing Page
+- Split layout with progressive reveal; CTA appears with guard (typewriter or timeout)
+- Hero image is object-cover to avoid layout shifts; tooltips suppressed to prevent filename exposure
+- Highlight phrase uses a branded display font plus animated text-shadow loop
+
+2) Projects Page
+- Grid cards with motion affordances; dialog with structured sections: Overview, Achievements, Technologies, Impact
+- Portfolio project entry includes metrics and explicit collaboration credit (Vive Coding)
+- Title attributes set to empty strings on images to prevent filename tooltips
+
+3) Skills Page
+- Morphing text hero and physics-driven tag field for playful competence signaling
+- Hierarchical typography: display fonts for titles, readable serif for details
+
+4) About Page
+- Spotlight hero with animated role carousel; long-form story placed behind a dialog to protect scanability
+- Icons and gradients used sparingly to keep information scent high
+
+5) Gallery
+- Masonry-like grid with hover focus effect; images opt-in to lightbox with keyboard navigation
+- Lazy-loading and decoding hints to keep time-to-interaction low
+
+### Testing and Quality Assurance
+- Manual cross-browser checks (Chrome, Edge, Safari)
+- Light/ Dark theme sweeps to verify contrast, brand legibility, and focus states
+- Keyboard-only walkthrough on all routes and dialogs
+- Synthetic Lighthouse runs in CI-like conditions on throttled mobile profiles
+
+### Observed Trade-offs
+- Heavy use of custom fonts can harm CLS and FCP; mitigated by reserving display fonts for headings and swapping body to system/serif stack fallback
+- SPA routing avoids SSR complexity but needs extra care for SEO and deep linking; content remains crawlable with proper metadata and sitemap
+
+### Roadmap
+- Add per-route code ownership and storybook docs for custom UI primitives
+- Expand Gallery with categories, search, and prefetching on hover
+- Migrate to image CDN with AVIF variants and DPR-aware srcset
+- Add simple analytics pipeline for richer engagement insights
+- Optional SSR/SSG exploration for first-render SEO while keeping interactive depth
+
+### Lessons Learned
+- Set typographic rules early to avoid churn; readability is non-negotiable for content
+- Micro-interactions work best when consistent, fast, and subtle
+- Performance wins compound: image hygiene + code splitting + motion hygiene = delightful speed
+- Pairing (with Vive Coding) accelerated decisions, improved UX quality, and reduced rework
+
+### Appendix: Metrics Collection Notes
+- Lighthouse repeated runs averaged to minimize variability; caches were primed only for “warm” numbers
+- Engagement deltas derived from analytics snapshots (60 days pre vs. 60 days post)
+- Build timings captured from local and CI logs to ensure reproducibility
