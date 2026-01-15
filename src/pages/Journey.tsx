@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { VelocityScroll } from "@/components/ui/scroll-based-velocity";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { GooeyText } from "@/components/ui/gooey-text-morphing";
 import { Card } from "@/components/ui/card";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
-import { Calendar, Award, Briefcase, GraduationCap, MapPin, Trophy, Star, CheckCircle, BookOpen, Users, Target } from "lucide-react";
+import { Calendar, Award, Briefcase, GraduationCap, MapPin, Trophy, Star, CheckCircle, BookOpen, Users, Target, ChevronDown } from "lucide-react";
 
 const Journey = () => {
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start 0.2", "end 0.8"] });
+  const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   const journeyData = [
     {
       year: "2025 - 2027",
@@ -65,9 +69,21 @@ const Journey = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 py-8 md:py-12 px-4 md:px-6">
+    <div ref={containerRef} className="min-h-screen bg-gradient-to-b from-background via-background to-secondary/20 py-8 md:py-12 px-4 md:px-6 relative overflow-hidden">
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 opacity-30"></div>
+
+      <motion.div
+        className="absolute top-0 left-0 h-1 bg-gradient-to-r from-orange-600 via-amber-600 to-yellow-600"
+        style={{ width: progressWidth }}
+      />
+
       <div className="container mx-auto max-w-6xl">
-        <div className="relative w-full mb-8 md:mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="relative w-full mb-8 md:mb-12"
+        >
           <GooeyText
             texts={["My Journey", "My Path", "My Story", "My Experience"]}
             morphTime={1}
@@ -75,7 +91,7 @@ const Journey = () => {
             className="h-[80px] md:h-[100px] flex items-center justify-center font-bold mb-6 font-amanojaku"
             textClassName="bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-yellow-500"
           />
-        </div>
+        </motion.div>
 
         <div className="relative ml-0 w-full bg-transparent overflow-hidden rounded-none py-8 md:py-12 mb-12">
           <VelocityScroll
@@ -85,12 +101,15 @@ const Journey = () => {
           />
         </div>
 
-
         <div className="w-full max-w-6xl mx-auto">
           <div className="relative">
-            {/* Timeline line */}
-            <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-500 via-orange-400 to-orange-300 rounded-full hidden md:block"></div>
-            
+            <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-500 via-orange-400 to-transparent opacity-40 rounded-full hidden md:block"></div>
+
+            <motion.div
+              className="absolute left-8 top-0 w-1 bg-gradient-to-b from-orange-600 to-orange-500 rounded-full hidden md:block origin-top"
+              style={{ scaleY: scrollYProgress }}
+            />
+
             <div className="space-y-12">
               {journeyData.map((item, index) => (
                 <motion.div
@@ -100,93 +119,141 @@ const Journey = () => {
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   className="relative flex items-center"
+                  onHoverStart={() => setExpandedIndex(index)}
+                  onHoverEnd={() => setExpandedIndex(null)}
                 >
-                  {/* Timeline dot */}
-                  <div className="absolute left-6 w-4 h-4 bg-orange-500 rounded-full border-4 border-white shadow-lg z-10 hidden md:block"></div>
-                  
-                  {/* Content card */}
-                  <div className="ml-0 md:ml-16 w-full">
-                    <Card className="overflow-hidden hover:shadow-2xl transition-all duration-500 rounded-2xl border-2 border-gray-200/60 dark:border-gray-800/60 backdrop-blur hover:border-orange-300 dark:hover:border-orange-700 group">
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-                        <div className={`relative h-64 lg:h-80 overflow-hidden group ${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
-                          <img
-                            src={item.image}
-                            alt={item.title}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            loading="lazy"
-                            decoding="async"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                          <div className="absolute top-6 left-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-full font-bold text-sm shadow-xl flex items-center gap-2">
-                            <Calendar className="w-4 h-4" />
-                            {item.year}
-                          </div>
-                          {index < 2 && (
-                            <div className="absolute top-6 right-6 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-3 py-1 rounded-full font-bold text-sm shadow-xl flex items-center gap-1">
-                              <Star className="w-4 h-4" />
-                              Featured
-                            </div>
-                          )}
-                        </div>
+                  <motion.div
+                    className="absolute left-5 w-2 h-2 bg-orange-500 rounded-full z-10 hidden md:block"
+                    animate={expandedIndex === index ? { scale: 2, boxShadow: "0 0 20px rgba(234, 88, 12, 0.8)" } : { scale: 1, boxShadow: "none" }}
+                    transition={{ duration: 0.3 }}
+                  />
 
-                        <div className={`p-8 lg:p-10 flex flex-col justify-center bg-gradient-to-br from-white to-orange-50/30 dark:from-gray-900 dark:to-orange-950/30 ${index % 2 === 0 ? 'lg:order-2' : 'lg:order-1'}`}>
-                          <div className="mb-6">
-                            <div className="flex items-start gap-4 mb-4">
-                              <div className="mt-1 p-3 rounded-xl bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900 dark:to-orange-800">
-                                {item.year.includes("2025") || item.year.includes("Pursuing") ? (
-                                  <GraduationCap className="w-6 h-6 text-orange-700 dark:text-orange-300" />
-                                ) : item.year.includes("Intern") || item.title.includes("Intern") ? (
-                                  <Briefcase className="w-6 h-6 text-orange-700 dark:text-orange-300" />
-                                ) : (
-                                  <Award className="w-6 h-6 text-orange-700 dark:text-orange-300" />
-                                )}
+                  <div className="ml-0 md:ml-16 w-full">
+                    <motion.div
+                      layout
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    >
+                      <Card
+                        className="overflow-hidden cursor-pointer hover:shadow-2xl transition-all duration-500 rounded-2xl border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-sm hover:border-orange-300 dark:hover:border-orange-700 group relative bg-gradient-to-br from-white/80 to-orange-50/40 dark:from-gray-900/80 dark:to-orange-950/30 hover:from-white hover:to-orange-50/60 dark:hover:from-gray-800 dark:hover:to-orange-900/50"
+                        onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
+                      >
+                        <div className={`grid grid-cols-1 ${expandedIndex === index ? 'lg:grid-cols-2' : 'lg:grid-cols-2'} gap-0 transition-all duration-500`}>
+                          <motion.div
+                            className={`relative h-64 lg:h-80 overflow-hidden group ${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}
+                            whileHover={{ scale: 1.02 }}
+                          >
+                            <img
+                              src={item.image}
+                              alt={item.title}
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                            <motion.div
+                              className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"
+                              initial={{ opacity: 0 }}
+                              whileHover={{ opacity: 1 }}
+                              transition={{ duration: 0.3 }}
+                            />
+
+                            <motion.div
+                              className="absolute top-6 left-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-full font-bold text-sm shadow-xl flex items-center gap-2"
+                              whileHover={{ scale: 1.05, y: -2 }}
+                            >
+                              <Calendar className="w-4 h-4" />
+                              {item.year}
+                            </motion.div>
+
+                            {index < 2 && (
+                              <motion.div
+                                className="absolute top-6 right-6 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-3 py-1 rounded-full font-bold text-sm shadow-xl flex items-center gap-1"
+                                animate={{ y: [0, -4, 0] }}
+                                transition={{ duration: 2, repeat: Infinity }}
+                              >
+                                <Star className="w-4 h-4" />
+                                Featured
+                              </motion.div>
+                            )}
+                          </motion.div>
+
+                          <motion.div
+                            className={`p-8 lg:p-10 flex flex-col justify-center bg-gradient-to-br from-white/50 to-orange-50/30 dark:from-gray-900/50 dark:to-orange-950/20 ${index % 2 === 0 ? 'lg:order-2' : 'lg:order-1'}`}
+                            initial={{ opacity: 0.8 }}
+                            whileHover={{ opacity: 1 }}
+                          >
+                            <div className="mb-6">
+                              <div className="flex items-start gap-4 mb-4">
+                                <motion.div
+                                  className="mt-1 p-3 rounded-xl bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900 dark:to-orange-800"
+                                  whileHover={{ rotate: 10, scale: 1.1 }}
+                                >
+                                  {item.year.includes("2025") || item.year.includes("Pursuing") ? (
+                                    <GraduationCap className="w-6 h-6 text-orange-700 dark:text-orange-300" />
+                                  ) : item.year.includes("Intern") || item.title.includes("Intern") ? (
+                                    <Briefcase className="w-6 h-6 text-orange-700 dark:text-orange-300" />
+                                  ) : (
+                                    <Award className="w-6 h-6 text-orange-700 dark:text-orange-300" />
+                                  )}
+                                </motion.div>
+                                <div className="flex-1">
+                                  <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2 font-amanojaku">
+                                    {item.title}
+                                  </h3>
+                                  <div className="flex items-center gap-2 mb-3">
+                                    <MapPin className="w-5 h-5 text-orange-600 dark:text-orange-500" />
+                                    <p className="text-lg text-orange-600 dark:text-orange-500 font-semibold">
+                                      {item.institution}
+                                    </p>
+                                  </div>
+                                  <motion.div
+                                    className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-100 to-orange-200 dark:from-orange-900 dark:to-orange-800 text-orange-800 dark:text-orange-200 px-4 py-2 rounded-full text-sm font-bold border border-orange-200 dark:border-orange-800 shadow-sm"
+                                    whileHover={{ scale: 1.05 }}
+                                  >
+                                    <Trophy className="w-4 h-4" />
+                                    {item.achievement}
+                                  </motion.div>
+                                </div>
                               </div>
-                              <div className="flex-1">
-                                <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2 font-amanojaku">
-                                  {item.title}
-                                </h3>
-                                <div className="flex items-center gap-2 mb-3">
-                                  <MapPin className="w-5 h-5 text-orange-600 dark:text-orange-500" />
-                                  <p className="text-lg text-orange-600 dark:text-orange-500 font-semibold">
-                                    {item.institution}
+                            </div>
+
+                            <motion.p
+                              className="text-lg lg:text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-6 font-young-serif"
+                              initial={{ opacity: 0.8 }}
+                              whileHover={{ opacity: 1 }}
+                            >
+                              {item.description}
+                            </motion.p>
+
+                            {item.highlight && (
+                              <motion.div
+                                className="border-l-4 border-orange-500 pl-6 py-4 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-r-xl mb-4"
+                                initial={{ x: -20, opacity: 0 }}
+                                whileInView={{ x: 0, opacity: 1 }}
+                                transition={{ duration: 0.5, delay: 0.2 }}
+                              >
+                                <div className="flex items-start gap-3">
+                                  <CheckCircle className="w-5 h-5 text-orange-600 dark:text-orange-400 mt-0.5 flex-shrink-0" />
+                                  <p className="text-base lg:text-lg text-gray-700 dark:text-gray-300 font-semibold font-young-serif">
+                                    {item.highlight}
                                   </p>
                                 </div>
-                                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-100 to-orange-200 dark:from-orange-900 dark:to-orange-800 text-orange-800 dark:text-orange-200 px-4 py-2 rounded-full text-sm font-bold border border-orange-200 dark:border-orange-800 shadow-sm">
-                                  <Trophy className="w-4 h-4" />
-                                  {item.achievement}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                              </motion.div>
+                            )}
 
-                          <p className="text-lg lg:text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-6 font-young-serif">
-                            {item.description}
-                          </p>
-
-                          {item.highlight && (
-                            <div className="border-l-4 border-orange-500 pl-6 py-4 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-r-xl mb-4">
-                              <div className="flex items-start gap-3">
-                                <CheckCircle className="w-5 h-5 text-orange-600 dark:text-orange-400 mt-0.5 flex-shrink-0" />
-                                <p className="text-base lg:text-lg text-gray-700 dark:text-gray-300 font-semibold font-young-serif">
-                                  {item.highlight}
-                                </p>
-                              </div>
-                            </div>
-                          )}
-
-                          {item.position && (
-                            <motion.div
-                              whileHover={{ x: 5 }}
-                              className="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg font-medium"
-                            >
-                              <Users className="w-4 h-4" />
-                              <span className="font-semibold">Position:</span>
-                              <span>{item.position}</span>
-                            </motion.div>
-                          )}
+                            {item.position && (
+                              <motion.div
+                                className="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg font-medium"
+                                whileHover={{ x: 5, backgroundColor: "rgb(248, 113, 113)" }}
+                              >
+                                <Users className="w-4 h-4" />
+                                <span className="font-semibold">Position:</span>
+                                <span>{item.position}</span>
+                              </motion.div>
+                            )}
+                          </motion.div>
                         </div>
-                      </div>
-                    </Card>
+                      </Card>
+                    </motion.div>
                   </div>
                 </motion.div>
               ))}
