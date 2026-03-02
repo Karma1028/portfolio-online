@@ -1,9 +1,28 @@
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
-import { useState, useRef } from "react";
-import { ExternalLink, Award, Clock, Target, Zap, TrendingUp, CheckCircle2, BarChart3, Database, Code, Users, X, Sparkles } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useState } from "react";
+import {
+  ExternalLink,
+  Award,
+  Clock,
+  Target,
+  Zap,
+  TrendingUp,
+  CheckCircle2,
+  BarChart3,
+  Database,
+  Code,
+  Users,
+  ArrowRight,
+  Sparkles,
+  Layers,
+} from "lucide-react";
 
 interface Project {
   id: number;
@@ -18,348 +37,511 @@ interface Project {
   impact: string;
 }
 
+const renderHighlightedText = (text: string) => {
+  if (!text) return text;
+  const parts = text.split(/(\*\*.*?\*\*)/g);
+  return parts.map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <span key={index} className="font-bold text-orange-600 dark:text-orange-400">
+          {part.slice(2, -2)}
+        </span>
+      );
+    }
+    return part;
+  });
+};
+
 const Projects = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [expandedId, setExpandedId] = useState<number | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start 0.3", "end 0.7"] });
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.5], [0.5, 1]);
 
   const projects: Project[] = [
     {
-      id: 5,
-      title: "This Portfolio Website",
-      company: "Self-initiated • built with Vive Coding",
-      duration: "2024–2025",
-      thumbnail: "/og-image.png",
-      shortDescription: "Designed and launched a recruiter-focused digital portfolio to showcase my transition from Chemical Engineering to Data Analytics. Built with React + TypeScript, Vite, Tailwind and Framer Motion.",
-      fullDescription: "Designed and launched a recruiter-focused digital portfolio to showcase my transition from Chemical Engineering to Data Analytics. Built with React + TypeScript, Vite, Tailwind and Framer Motion. I created the first drafts using bolt.new, refined visuals in lovable.ai, edited and formatted exports with Cursor AI (using dev.v0 prompts), pushed changes through a GitHub export/ZIP, and deployed the final site on Netlify. I authored all copy, selected and edited images, and handled the final site delivery.",
-      achievements: [
-        "Turned generative front-end drafts into a polished, deployable React portfolio (bolt.new → lovable.ai → Cursor AI → GitHub → Netlify)",
-        "Built an optimized gallery (responsive images, lazy-loading and a 6-image rotating preview) and applied targeted front-end edits to keep the site visually rich but light-weight",
-        "Managed end-to-end delivery without paid subscriptions (used free APIs and free-tier platform features) and solved hosting limits by deploying on Netlify",
-      ],
-      technologies: ["React", "TypeScript", "Vite", "Tailwind CSS", "Framer Motion", "Netlify", "bolt.new", "lovable.ai", "Cursor AI (dev.v0 prompts)"],
-      impact: "Professional narrative site that showcases my transition journey and technical capabilities while demonstrating proficiency with modern AI-assisted development workflows."
-    },
-    {
       id: 1,
-      title: "SUJAN P&L Report",
-      company: "Celebal Technologies",
-      duration: "July 2023 - Dec 2023",
-      thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2940&auto=format&fit=crop",
-      shortDescription: "Comprehensive 54-page Power BI financial reporting solution with advanced DAX measures and time intelligence.",
-      fullDescription: "Led the development of an enterprise-grade Power BI Profit & Loss reporting solution for SUJAN, transforming static financial reporting into a dynamic, interactive business intelligence platform. The solution empowered leadership with real-time insights and reduced query response times significantly.",
+      title: "Strategic Insurance Portfolio Optimisation & CLV Forecasting",
+      company: "Academic Project",
+      duration: "2024",
+      thumbnail: "/projects/proj_insurance_clv.png",
+      shortDescription:
+        "Architected a risk framework isolating high Loss Ratio segments and engineered a Random Forest CLV engine.",
+      fullDescription:
+        "Engineered a **Random Forest CLV** (Customer Lifetime Value) engine achieving **87% R² accuracy** for precise customer valuation. Automated **K-Means segmentation** of 9,000+ customers into **4 profit-tiers** to optimise retention budgets, and architected a risk framework isolating a **67% higher Loss Ratio** segment to recalibrate underwriting strategy.",
       achievements: [
-        "Contributed to a 4-member team to devise a 54-page Power BI report",
-        "Constructed report with over 300 DAX measures",
-        "Enhanced the report UI with custom visuals and dynamic slicers for intuitive data exploration",
-        "Secured a 40% reduction in query loading times across 10+ queries by inspecting and refining DAX measures",
-        "Implemented advanced time-intelligence functions to enable comprehensive period-over-period financial analysis",
-        "Delivered a robust BI solution that replaced static reporting and empowered leadership with dynamic, actionable insights"
+        "Architected a risk framework isolating a **67% higher Loss Ratio** segment to recalibrate the underwriting strategy.",
+        "Automated **K-Means segmentation** of 9,000+ customers into **4 profit-tiers** to optimise retention budgets.",
+        "Engineered a **Random Forest CLV engine**, achieving **87% R² accuracy** to ensure precise customer valuation.",
       ],
-      technologies: ["Power BI", "DAX", "Power Query", "SQL", "Data Modeling"],
-      impact: "Transformed financial reporting process, enabling faster decision-making and improved operational efficiency across the organization."
+      technologies: ["Python", "K-Means", "Random Forest", "Machine Learning", "Data Analytics"],
+      impact:
+        "Optimised **retention budgets** and improved **underwriting strategy** by precisely valuing customers and identifying **high-risk segments**.",
     },
     {
       id: 2,
-      title: "Pure Storage - Internal Project",
+      title: "SUJAN P&L Report",
       company: "Celebal Technologies",
       duration: "July 2023 - Dec 2023",
-      thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop",
-      shortDescription: "Comprehensive KPI standardization and documentation project for enterprise data integrity.",
-      fullDescription: "Spearheaded an internal initiative to standardize metrics and establish a single source of truth across five projects. Created reproducible documentation that enhanced project accessibility and accelerated future development cycles.",
+      thumbnail: "/projects/proj_powerbi.png",
+      shortDescription:
+        "End-to-end 54-page Power BI financial reporting solution with advanced DAX measures.",
+      fullDescription:
+        "Collaborated in a 4-person team to gather requirements for a **comprehensive financial tracker**, translating 1 year of transactional data into **52 distinct KPIs**. Managed the transition of a static Excel tracker into a **live, interactive financial intelligence product**.",
       achievements: [
-        "Teamed up with five members to define 150+ KPIs across five projects in two weeks",
-        "Translated over 50 complex SQL/DAX queries into clear documentation, ensuring project clarity and on-time delivery",
-        "Authored a comprehensive knowledge base that enhanced project accessibility and understanding for all team members",
-        "Drove the standardisation of metrics to establish a single source of truth, ensuring data integrity across all projects",
-        "Enabled effective team collaboration and accelerated future development by creating a centralised repository of business logic"
+        "Facilitated **weekly stakeholder sprints** to gather requirements and align the ongoing dashboard development.",
+        "Optimised complex DAX queries, reducing Premium plan dashboard **load times by 40%** from 1-2 minutes.",
+        "Validated custom YTD, MTD, and FTD logic, ensuring **strict data parity** between Power BI and legacy Excel models.",
+        "Directed the transition of a complex static Excel tracker into a **live, interactive financial intelligence product**.",
       ],
-      technologies: ["SQL", "DAX", "Documentation", "KPI Design", "Data Governance"],
-      impact: "Established data governance framework that improved cross-team collaboration and reduced redundancy in metric definitions."
+      technologies: ["Power BI", "DAX", "Power Query", "Excel", "Data Modeling"],
+      impact:
+        "Transformed financial reporting process, enabling **real-time decision-making** with optimized response times and **100% data parity**.",
     },
     {
       id: 3,
-      title: "Hydrogen Production & Carbon Footprint Analysis",
-      company: "ONGC R&D Project",
-      duration: "2019 - 2023",
-      thumbnail: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=2940&auto=format&fit=crop",
-      shortDescription: "Sustainability simulation project for hydrogen production using biomass gasification.",
-      fullDescription: "Designed and executed a sophisticated data simulation of biomass gasification process using ASPEN software as part of a research initiative to develop sustainable hydrogen production methods and reduce carbon footprint.",
+      title: "Quantitative Market Analysis & Predictive Portfolio",
+      company: "Academic Project (Tata Motors)",
+      duration: "2024",
+      thumbnail: "/projects/proj_market_analysis.png",
+      shortDescription:
+        "Predictive trading strategy merging XGBoost probabilities and FinBERT sentiment.",
+      fullDescription:
+        "Architected an **XGBoost predictive model** using 5-year market data for Tata Motors, achieving **54.8% directional accuracy**. Engineered **30+ features** with recursive elimination to isolate **15 core market predictors**. Merged ML probabilities and **FinBERT sentiment** to generate a regime-filtered trading signal.",
       achievements: [
-        "Designed a sophisticated data simulation of biomass gasification in a 5-member team using ASPEN software",
-        "Validated a method to extract 99% pure hydrogen by analysing simulation data",
-        "Proved a process to reduce the carbon footprint through sustainable hydrogen production",
-        "Delivered a data-backed proof-of-concept for a viable and sustainable hydrogen production method"
+        "Architected an **XGBoost predictive model** using 5-year market data, achieving **54.8% directional accuracy**.",
+        "Engineered **30+ features**, using recursive elimination to isolate **15 core market predictors**.",
+        "Merged ML probabilities and **FinBERT sentiment** to generate a regime-filtered trading signal.",
       ],
-      technologies: ["ASPEN Software", "Data Simulation", "Chemical Engineering", "Research & Development"],
-      impact: "Contributed to sustainable energy research with potential applications in clean hydrogen production and carbon footprint reduction."
+      technologies: ["Python", "XGBoost", "FinBERT", "Machine Learning", "NLP"],
+      impact:
+        "Developed a robust **predictive trading strategy** that combines technical indicators with sentiment analysis for improved **market timing**.",
     },
     {
       id: 4,
-      title: "Aqueous Retarded Acid Formulation",
+      title: "Pure Storage - KPI Standardization",
+      company: "Celebal Technologies",
+      duration: "July 2023 - Dec 2023",
+      thumbnail: "/projects/proj_datakpi.png",
+      shortDescription:
+        "Centralized KPI documentation and synchronization across five reporting projects.",
+      fullDescription:
+        "Directed product alignment within a 5-person team, bridging the gap between **SQL and Power BI developers**. Standardised data frameworks and **centralised business logic** into a shared repository to speed up future reporting efforts.",
+      achievements: [
+        "Directed product alignment within a 5-person team, bridging the gap between **SQL and Power BI developers**.",
+        "Translated backend SQL logic into actionable visualisation requirements for **10+ core KPIs** across five projects.",
+        "Authored documentation on data distribution, minimising interpretation errors between **cross-functional stakeholders**.",
+        "Standardised data frameworks to ensure all projects utilised a **single, consistent source of truth** for reporting.",
+        "Centralised business logic into a **shared repository** to streamline collaboration and speed up future development.",
+      ],
+      technologies: ["SQL", "Power BI", "DAX", "Documentation", "Data Governance"],
+      impact:
+        "Established a solid **data governance framework**, creating a single source of truth and resolving ambiguities across **5 projects**.",
+    },
+    {
+      id: 5,
+      title: "Digital Portfolio Website",
+      company: "Personal Project",
+      duration: "2024–2025",
+      thumbnail: "/og-image.png",
+      shortDescription:
+        "Interactive personal analytics portfolio covering the transition from Engineering to Data Analytics.",
+      fullDescription:
+        "Deployed a **centralised analytics platform**, managing the full lifecycle from concept to live production. Engineered a **low-latency interface** to optimise site performance and ensure a seamless user experience displaying complex data insights.",
+      achievements: [
+        "Deployed a **centralised analytics platform**, managing the full lifecycle from concept to live production.",
+        "Engineered a **low-latency interface** to optimise site performance and ensure a seamless user experience.",
+        "Leveraged modern web tools (**React, Tailwind, Framer Motion**) integrated with rapid AI-assisted development workflows.",
+      ],
+      technologies: ["React", "TypeScript", "Tailwind CSS", "Framer Motion", "Netlify"],
+      impact:
+        "Professional narrative site that showcases **technical versatility**, achieving **near-instant load times** with an optimized architecture.",
+    },
+    {
+      id: 6,
+      title: "Hydrogen Production & Carbon Footprint Analysis",
       company: "ONGC R&D Project",
       duration: "2019 - 2023",
-      thumbnail: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2940&auto=format&fit=crop",
-      shortDescription: "R&D project to develop optimal acid formulation for limestone reservoir applications.",
-      fullDescription: "Participated in a 6-member R&D team to identify and develop an optimal acid formulation solution for limestone reservoirs in oil and gas production, combining extensive research analysis with practical feasibility assessment.",
+      thumbnail: "/projects/proj_hydrogen.png",
+      shortDescription:
+        "Simulation of biomass gasification process for sustainable hydrogen production.",
+      fullDescription:
+        "Collaborated with a 5-person team to model **biomass gasification** and evaluate its production feasibility. Designed and executed a **sophisticated data simulation** to validate theoretical hydrogen yields for clean energy applications.",
       achievements: [
-        "Identified an optimal solution to a complex engineering challenge as part of a 6-member R&D team",
-        "Defined an effective acid formulation for limestone reservoirs by synthesising extensive research data",
-        "Assessed the solution's technical feasibility by gaining hands-on expertise in oil and gas production techniques"
+        "Collaborated with a 5-person team to model **biomass gasification** and evaluate its production feasibility.",
+        "Validated a process for **high-purity hydrogen extraction** that directly supports **carbon reduction targets**.",
+        "Delivered a verified **proof-of-concept** to demonstrate the practical viability of this sustainable energy method.",
       ],
-      technologies: ["Chemical Engineering", "Research Methodology", "Data Synthesis", "Technical Analysis"],
-      impact: "Developed practical solution for enhanced oil recovery with potential applications in petroleum engineering."
+      technologies: ["ASPEN Software", "Data Simulation", "Chemical Engineering", "Research Analysis"],
+      impact:
+        "Contributed to **sustainable energy research**, successfully validating extraction parameters that reduce **industrial carbon footprints**.",
     }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { type: "spring", stiffness: 100, damping: 15 },
-    },
-  };
+  const heroProject = projects[0];
+  const gridProjects = projects.slice(1);
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-gradient-to-b from-background via-background to-secondary/20 py-8 md:py-12 relative overflow-hidden">
-      <div className="absolute inset-0 bg-grid-small-black/[0.03] dark:bg-grid-small-white/[0.03]"></div>
-
-      <div className="container mx-auto max-w-6xl px-4 md:px-6 relative z-10">
+    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 py-8 md:py-12 font-sans">
+      <div className="container mx-auto max-w-6xl px-4 md:px-6">
+        {/* Page Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-8 md:mb-16"
+          className="text-center mb-12 md:mb-16"
         >
-          <motion.div style={{ opacity: titleOpacity }} className="inline-flex items-center gap-2 mb-6">
-            <Sparkles className="w-5 h-5 text-orange-500" />
-            <span className="text-sm font-semibold text-orange-600 dark:text-orange-500 uppercase tracking-wider">
-              Featured Work
-            </span>
-          </motion.div>
+          <motion.span
+            initial={{ opacity: 0, letterSpacing: "0.1em" }}
+            animate={{ opacity: 1, letterSpacing: "0.3em" }}
+            transition={{ duration: 1, delay: 0.1 }}
+            className="text-xs md:text-sm uppercase tracking-[0.3em] text-orange-500/80 mb-4 block font-sans"
+          >
+            Portfolio & Experience
+          </motion.span>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-yellow-500 font-amanojaku">
-            Projects & Experience
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 font-amanojaku">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-yellow-500">
+              Projects & Experience
+            </span>
           </h1>
-          <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Explore my journey through <span className="font-bold text-foreground">data analytics, business intelligence, and engineering projects</span> that showcase technical expertise and real-world impact
+
+          <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-young-serif">
+            Explore my journey through{" "}
+            <span className="font-bold text-foreground">
+              data analytics, business intelligence, and engineering projects
+            </span>
           </p>
         </motion.div>
 
+        {/* ========= HERO SECTION - Portfolio Project ========= */}
         <motion.div
-          className="max-w-6xl mx-auto"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="mb-12 md:mb-16"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-max">
-            {projects.map((project, index) => {
-              const isExpanded = expandedId === project.id;
-              const isFeatured = index === 0 || index === 4;
+          <div
+            className="group relative rounded-3xl overflow-hidden cursor-pointer bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-800 hover:border-orange-200 dark:hover:border-orange-800 transition-all duration-500 shadow-lg hover:shadow-2xl"
+            onClick={() => setSelectedProject(heroProject)}
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+              {/* Hero Image */}
+              <div className="relative h-64 lg:h-[380px] overflow-hidden">
+                <img
+                  src={heroProject.thumbnail}
+                  alt={heroProject.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="eager"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/80 dark:to-gray-900/80 hidden lg:block" />
+                <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-gray-900 via-transparent to-transparent lg:hidden" />
 
-              return (
-                <motion.div
-                  key={project.id}
-                  variants={itemVariants}
-                  layout
-                  className={`${isFeatured && index === 0 ? "md:col-span-2 lg:col-span-1 md:row-span-2" : ""} ${isFeatured && index === 4 ? "md:col-span-2" : ""}`}
-                >
-                  <motion.div
-                    layoutId={`project-${project.id}`}
-                    onClick={() => setExpandedId(isExpanded ? null : project.id)}
-                    className="h-full cursor-pointer"
-                  >
-                    <Card
-                      className={`overflow-hidden hover:shadow-2xl transition-all duration-300 h-full border border-gray-200/60 dark:border-gray-800/60 backdrop-blur-sm hover:border-orange-300 dark:hover:border-orange-700 group relative bg-gradient-to-br from-white/80 to-orange-50/30 dark:from-gray-900/80 dark:to-orange-950/20 hover:from-white hover:to-orange-50/60 dark:hover:from-gray-800 dark:hover:to-orange-900/40 ${
-                        isExpanded ? "ring-2 ring-orange-500 shadow-2xl" : ""
-                      }`}
+                {/* Floating badge */}
+                <div className="absolute top-4 left-4">
+                  <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-lg">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    Featured Project
+                  </div>
+                </div>
+              </div>
+
+              {/* Hero Content */}
+              <div className="p-6 md:p-8 lg:p-10 flex flex-col justify-center">
+                <div className="flex items-center gap-2 mb-3">
+                  <Layers className="w-5 h-5 text-orange-500" />
+                  <span className="text-sm text-orange-600 dark:text-orange-400 font-semibold">
+                    {heroProject.company}
+                  </span>
+                </div>
+
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 font-amanojaku group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-300">
+                  {heroProject.title}
+                </h2>
+
+                <div className="flex items-center gap-2 mb-4">
+                  <Clock className="w-4 h-4 text-gray-400" />
+                  <p className="text-sm text-gray-500 font-medium">
+                    {heroProject.duration}
+                  </p>
+                </div>
+
+                <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 leading-relaxed mb-6 font-sans">
+                  {heroProject.shortDescription}
+                </p>
+
+                {/* Tech pills */}
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {heroProject.technologies.slice(0, 5).map((tech, idx) => (
+                    <motion.span
+                      key={idx}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.4 + idx * 0.05 }}
+                      whileHover={{ scale: 1.06, y: -2 }}
+                      className="px-3 py-1 bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/30 dark:to-amber-900/30 text-orange-700 dark:text-orange-300 rounded-full text-xs font-semibold border border-orange-200 dark:border-orange-800 hover:border-orange-300 dark:hover:border-orange-700 transition-colors cursor-default"
                     >
-                      <motion.div className="relative h-64 overflow-hidden">
-                        <img
-                          src={project.thumbnail}
-                          alt={project.title}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                          loading="lazy"
-                        />
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"
-                          initial={{ opacity: 0 }}
-                          whileHover={{ opacity: 1 }}
-                          transition={{ duration: 0.3 }}
-                        />
+                      {tech}
+                    </motion.span>
+                  ))}
+                  {heroProject.technologies.length > 5 && (
+                    <span className="px-3 py-1 bg-gray-50 dark:bg-gray-800 text-gray-500 rounded-full text-xs font-semibold">
+                      +{heroProject.technologies.length - 5} more
+                    </span>
+                  )}
+                </div>
 
-                        <motion.div
-                          className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg"
-                          whileHover={{ scale: 1.05 }}
-                        >
-                          {project.company}
-                        </motion.div>
-
-                        <AnimatePresence>
-                          {!isExpanded && (
-                            <motion.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                            >
-                              <div className="flex items-center gap-2 text-white text-sm font-semibold">
-                                <Award className="w-4 h-4" />
-                                <span>View Details</span>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </motion.div>
-
-                      <motion.div
-                        className="p-6"
-                        layout
-                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                      >
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="flex items-center gap-2 flex-1">
-                            <BarChart3 className="w-5 h-5 text-orange-500 flex-shrink-0" />
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                              {project.title}
-                            </h3>
-                          </div>
-                          {isExpanded && (
-                            <motion.button
-                              initial={{ scale: 0, rotate: -90 }}
-                              animate={{ scale: 1, rotate: 0 }}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setExpandedId(null);
-                              }}
-                              className="flex-shrink-0 p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-                            >
-                              <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                            </motion.button>
-                          )}
-                        </div>
-
-                        <div className="flex items-center gap-2 mb-4">
-                          <Clock className="w-4 h-4 text-orange-600 dark:text-orange-500" />
-                          <p className="text-sm text-orange-600 dark:text-orange-500 font-semibold">
-                            {project.duration}
-                          </p>
-                        </div>
-
-                        <p className={`text-sm text-gray-600 dark:text-gray-300 mb-4 leading-relaxed ${!isExpanded ? "line-clamp-3" : ""}`}>
-                          {project.id === 5 ? (
-                            <>
-                              Designed and launched a <span className="font-bold text-foreground">recruiter-focused digital portfolio</span> to showcase my transition from <span className="font-bold text-foreground">Chemical Engineering to Data Analytics</span>. Built with <span className="font-bold text-foreground">React + TypeScript, Vite, Tailwind and Framer Motion</span>.
-                            </>
-                          ) : (
-                            project.shortDescription
-                          )}
-                        </p>
-
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {project.technologies.slice(0, isExpanded ? undefined : 3).map((tech, idx) => (
-                            <motion.span
-                              key={idx}
-                              initial={{ opacity: 0, scale: 0.8 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ delay: idx * 0.05 }}
-                              whileHover={{ scale: 1.05 }}
-                              className="px-3 py-1 bg-gradient-to-r from-orange-100 to-orange-200 dark:from-orange-900 dark:to-orange-800 text-orange-800 dark:text-orange-200 rounded-full text-xs font-semibold border border-orange-200 dark:border-orange-800"
-                            >
-                              {tech}
-                            </motion.span>
-                          ))}
-                          {!isExpanded && project.technologies.length > 3 && (
-                            <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-full text-xs font-semibold">
-                              +{project.technologies.length - 3} more
-                            </span>
-                          )}
-                        </div>
-
-                        <AnimatePresence>
-                          {isExpanded && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: "auto" }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                              className="pt-6 border-t border-gray-200 dark:border-gray-700 space-y-6"
-                            >
-                              <div>
-                                <div className="flex items-center gap-2 mb-4">
-                                  <Target className="w-5 h-5 text-orange-600" />
-                                  <h4 className="text-lg font-semibold">Key Achievements</h4>
-                                </div>
-                                <ul className="space-y-3">
-                                  {project.achievements.map((achievement, idx) => (
-                                    <motion.li
-                                      key={idx}
-                                      initial={{ opacity: 0, x: -20 }}
-                                      animate={{ opacity: 1, x: 0 }}
-                                      transition={{ delay: idx * 0.1 }}
-                                      className="flex items-start gap-3 group"
-                                    >
-                                      <CheckCircle2 className="text-green-500 w-5 h-5 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
-                                      <span className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                                        {achievement}
-                                      </span>
-                                    </motion.li>
-                                  ))}
-                                </ul>
-                              </div>
-
-                              <div className="border-l-4 border-orange-500 pl-4 py-3 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-r-lg">
-                                <div className="flex items-start gap-3">
-                                  <TrendingUp className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
-                                  <div>
-                                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">Business Impact</h4>
-                                    <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                                      {project.impact}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div>
-                                <h4 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                                  <Zap className="w-5 h-5 text-orange-600" />
-                                  Full Description
-                                </h4>
-                                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                                  {project.id === 5 ? (
-                                    <>
-                                      Designed and launched a recruiter-focused digital portfolio to showcase my transition from <span className="font-bold text-foreground">Chemical Engineering to Data Analytics</span>. Built with <span className="font-bold text-foreground">React + TypeScript, Vite, Tailwind and Framer Motion</span>. I created the first drafts using <span className="font-bold text-foreground">bolt.new</span>, refined visuals in <span className="font-bold text-foreground">lovable.ai</span>, edited and formatted exports with <span className="font-bold text-foreground">Cursor AI (using dev.v0 prompts)</span>, pushed changes through a GitHub export/ZIP, and deployed the final site on <span className="font-bold text-foreground">Netlify</span>. I authored all copy, selected and edited images, and handled the final site delivery.
-                                    </>
-                                  ) : (
-                                    project.fullDescription
-                                  )}
-                                </p>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </motion.div>
-                    </Card>
-                  </motion.div>
-                </motion.div>
-              );
-            })}
+                {/* CTA */}
+                <div className="flex items-center gap-2 text-sm text-orange-600 dark:text-orange-400 font-medium group-hover:gap-3 transition-all duration-300">
+                  <span>View project details</span>
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </div>
+            </div>
           </div>
         </motion.div>
+
+        {/* ========= BENTO GRID - Remaining Projects ========= */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+          {gridProjects.map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+              whileHover={{ y: -6 }}
+              className={`${index === 0 ? "md:col-span-2" : ""}`}
+            >
+              <div
+                className={`group relative rounded-2xl overflow-hidden cursor-pointer bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-800 hover:border-orange-200 dark:hover:border-orange-700 transition-all duration-500 shadow-md hover:shadow-xl h-full ${index === 0 ? "min-h-[280px]" : "min-h-[320px]"
+                  }`}
+                onClick={() => setSelectedProject(project)}
+              >
+                {index === 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-0 h-full">
+                    <div className="relative h-56 md:h-full overflow-hidden">
+                      <img
+                        src={project.thumbnail}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-white/60 dark:md:to-gray-900/80" />
+
+                      <div className="absolute top-4 left-4">
+                        <div className="inline-flex items-center gap-1 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-gray-800 dark:text-white px-3 py-1 rounded-full text-xs font-semibold border border-gray-200 dark:border-gray-700 shadow-sm">
+                          <BarChart3 className="w-3 h-3 text-orange-500" />
+                          {project.company}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="p-6 md:p-8 flex flex-col justify-center">
+                      <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-2 font-amanojaku group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+                        {project.title}
+                      </h3>
+
+                      <div className="flex items-center gap-2 mb-3">
+                        <Clock className="w-3.5 h-3.5 text-gray-400" />
+                        <span className="text-xs text-gray-500 font-medium">
+                          {project.duration}
+                        </span>
+                      </div>
+
+                      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-5 font-sans line-clamp-3">
+                        {project.shortDescription}
+                      </p>
+
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {project.technologies.slice(0, 4).map((tech, idx) => (
+                          <span
+                            key={idx}
+                            className="px-3 py-1 bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/30 dark:to-amber-900/30 text-orange-700 dark:text-orange-300 rounded-full text-xs font-semibold border border-orange-200 dark:border-orange-800"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="flex items-center gap-2 text-xs text-orange-600 dark:text-orange-400 font-medium group-hover:gap-3 transition-all">
+                        <span>Explore project</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="relative h-48 md:h-52 overflow-hidden">
+                      <img
+                        src={project.thumbnail}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+
+                      <div className="absolute top-4 left-4">
+                        <div className="inline-flex items-center gap-1 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-gray-800 dark:text-white px-3 py-1 rounded-full text-xs font-semibold border border-gray-200 dark:border-gray-700 shadow-sm">
+                          {project.id <= 2 ? (
+                            <BarChart3 className="w-3 h-3 text-orange-500" />
+                          ) : (
+                            <Database className="w-3 h-3 text-emerald-500" />
+                          )}
+                          {project.company}
+                        </div>
+                      </div>
+
+                      <div className="absolute top-4 right-4">
+                        <div className="flex items-center gap-1 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-gray-600 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-medium border border-gray-200 dark:border-gray-700 shadow-sm">
+                          <Clock className="w-3 h-3" />
+                          {project.duration}
+                        </div>
+                      </div>
+
+                      {/* Hover overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    </div>
+
+                    <div className="p-5 md:p-6">
+                      <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-2 font-amanojaku group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-300">
+                        {project.title}
+                      </h3>
+
+                      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4 font-sans line-clamp-2">
+                        {project.shortDescription}
+                      </p>
+
+                      <div className="flex flex-wrap gap-1.5 mb-4">
+                        {project.technologies.slice(0, 3).map((tech, idx) => (
+                          <span
+                            key={idx}
+                            className="px-2.5 py-1 bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/30 dark:to-amber-900/30 text-orange-700 dark:text-orange-300 rounded-full text-[11px] font-semibold border border-orange-200 dark:border-orange-800"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                        {project.technologies.length > 3 && (
+                          <span className="px-2.5 py-1 bg-gray-50 dark:bg-gray-800 text-gray-500 rounded-full text-[11px] font-medium">
+                            +{project.technologies.length - 3}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-2 text-xs text-orange-600 dark:text-orange-400 font-medium group-hover:gap-3 transition-all duration-300">
+                        <span>View details</span>
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* ========= DETAIL DIALOG (UNTOUCHED) ========= */}
+        <Dialog
+          open={!!selectedProject}
+          onOpenChange={() => setSelectedProject(null)}
+        >
+          <DialogContent className="max-w-3xl max-h-[90vh] overflow-auto font-sans">
+            {selectedProject && (
+              <>
+                <DialogHeader>
+                  <DialogTitle className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white font-amanojaku">
+                    {selectedProject.title}
+                  </DialogTitle>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-2">
+                    <span className="text-sm md:text-base text-yellow-600 dark:text-yellow-500 font-semibold">
+                      {selectedProject.company}
+                    </span>
+                    <span className="hidden sm:inline text-gray-400">•</span>
+                    <span className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
+                      {selectedProject.duration}
+                    </span>
+                  </div>
+                </DialogHeader>
+
+                <div className="mt-4 space-y-6">
+                  <div className="relative h-48 md:h-64 rounded-lg overflow-hidden">
+                    <img
+                      src={selectedProject.thumbnail}
+                      alt={selectedProject.title}
+                      title=""
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  <div>
+                    <h4 className="text-lg md:text-xl font-semibold mb-2">
+                      Overview
+                    </h4>
+                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
+                      {renderHighlightedText(selectedProject.fullDescription)}
+                    </p>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <Target className="w-5 h-5 text-amber-600" />
+                      <h4 className="text-lg md:text-xl font-semibold">
+                        Key Achievements
+                      </h4>
+                    </div>
+                    <ul className="space-y-3">
+                      {selectedProject.achievements.map((achievement, idx) => (
+                        <motion.li
+                          key={idx}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: idx * 0.1 }}
+                          className="flex items-start group"
+                        >
+                          <CheckCircle2 className="text-green-500 mr-3 mt-0.5 flex-shrink-0 w-5 h-5 group-hover:scale-110 transition-transform" />
+                          <span className="text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
+                            {renderHighlightedText(achievement)}
+                          </span>
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <Zap className="w-5 h-5 text-amber-600" />
+                      <h4 className="text-lg md:text-xl font-semibold">
+                        Technologies Used
+                      </h4>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedProject.technologies.map((tech, idx) => (
+                        <motion.span
+                          key={idx}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: idx * 0.05 }}
+                          whileHover={{ scale: 1.1, y: -2 }}
+                          className="px-4 py-2 bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900 dark:to-orange-900 text-amber-800 dark:text-amber-200 rounded-full text-xs md:text-sm font-semibold border border-amber-200 dark:border-amber-800 shadow-sm cursor-default"
+                        >
+                          {tech}
+                        </motion.span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="border-l-4 border-amber-500 pl-4 py-3 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-r-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <TrendingUp className="w-5 h-5 text-amber-600" />
+                      <h4 className="text-base md:text-lg font-semibold">
+                        Business Impact
+                      </h4>
+                    </div>
+                    <p className="text-sm md:text-base text-gray-700 dark:text-gray-300 italic leading-relaxed">
+                      {renderHighlightedText(selectedProject.impact)}
+                    </p>
+                  </div>
+                </div>
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

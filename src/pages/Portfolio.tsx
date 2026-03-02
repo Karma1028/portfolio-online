@@ -21,11 +21,10 @@ const Portfolio = () => {
   return (
     <div className="min-h-screen bg-white text-gray-800">
       {/* Floating Navigation */}
-      <nav className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled 
-          ? "bg-white/80 shadow-lg" 
-          : "bg-transparent"
-      } backdrop-blur-sm`}>
+      <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled
+        ? "bg-white/80 shadow-lg"
+        : "bg-transparent"
+        } backdrop-blur-sm`}>
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <motion.img
@@ -88,7 +87,7 @@ const Portfolio = () => {
                 </a>
               </div>
               <a
-                href="https://drive.google.com/file/d/10bYUunhRF-u_PckJXV5XY8Pxz73_s2g8/view?usp=sharing"
+                href="https://drive.google.com/file/d/1nUGx0WYu_wtjeWonN4t6tRF-e86HdMyS/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block px-8 py-3 bg-gray-900 text-white rounded-full font-semibold hover:bg-gray-800 transition-all"

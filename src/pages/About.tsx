@@ -48,7 +48,7 @@ const About = () => {
 
           <div className="flex flex-col md:flex-row h-full">
             <div className="flex-1 p-6 md:p-8 relative z-10 flex flex-col justify-center">
-              <motion.h1 
+              <motion.h1
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
@@ -56,7 +56,7 @@ const About = () => {
               >
                 Hey, Tuhin here
               </motion.h1>
-              
+
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -85,18 +85,18 @@ const About = () => {
               </div>
 
               <div className="flex space-x-6 mt-6 md:mt-8">
-                <motion.a 
+                <motion.a
                   whileHover={{ scale: 1.1, rotate: 5 }}
-                  href="https://www.linkedin.com/in/tuhinbhattacharya28" 
-                  target="_blank" 
+                  href="https://www.linkedin.com/in/tuhinbhattacharya28"
+                  target="_blank"
                   rel="noopener noreferrer"
                 >
                   <FaLinkedin className="w-5 h-5 md:w-6 md:h-6 text-neutral-300 hover:text-white transition-colors" />
                 </motion.a>
-                <motion.a 
+                <motion.a
                   whileHover={{ scale: 1.1, rotate: -5 }}
-                  href="https://www.instagram.com/_threads_of_karma_/" 
-                  target="_blank" 
+                  href="https://www.instagram.com/_threads_of_karma_/"
+                  target="_blank"
                   rel="noopener noreferrer"
                 >
                   <FaInstagram className="w-5 h-5 md:w-6 md:h-6 text-neutral-300 hover:text-white transition-colors" />
@@ -106,7 +106,7 @@ const About = () => {
               <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                href="https://drive.google.com/file/d/10bYUunhRF-u_PckJXV5XY8Pxz73_s2g8/view?usp=sharing"
+                href="https://drive.google.com/file/d/1nUGx0WYu_wtjeWonN4t6tRF-e86HdMyS/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-5 py-2.5 mt-6 md:mt-8 bg-white text-black rounded-full font-semibold hover:bg-gray-200 transition-all text-sm w-fit shadow-lg font-sans"
@@ -128,8 +128,8 @@ const About = () => {
       {/* About Description */}
       <div className="text-center mb-12">
         <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-4xl mx-auto leading-relaxed font-young-serif">
-          My story is one of <span className="font-bold text-foreground">transformation</span>—from analyzing <span className="font-bold text-foreground">chemical processes</span> to crafting <span className="font-bold text-foreground">business intelligence solutions</span>. 
-          Each phase of my journey has been about <span className="font-bold text-foreground">finding patterns, solving problems, and telling stories through data</span>. 
+          My story is one of <span className="font-bold text-foreground">transformation</span>—from analyzing <span className="font-bold text-foreground">chemical processes</span> to crafting <span className="font-bold text-foreground">business intelligence solutions</span>.
+          Each phase of my journey has been about <span className="font-bold text-foreground">finding patterns, solving problems, and telling stories through data</span>.
           The <span className="font-bold text-foreground">precision of chemical engineering</span> meets the <span className="font-bold text-foreground">creativity of data storytelling</span> in everything I build.
         </p>
       </div>
@@ -200,7 +200,7 @@ const About = () => {
                 decoding="async"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileHover={{ opacity: 1, y: 0 }}
                 className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-500"
@@ -223,14 +223,14 @@ const About = () => {
           className="cursor-pointer md:col-span-2"
         >
           <Card className="h-[300px] md:h-[400px] p-6 md:p-8 hover:bg-accent/5 transition-all duration-500 overflow-auto rounded-xl border-2 border-accent/50 hover:border-accent bg-gradient-to-br from-background to-accent/10 shadow-xl hover:shadow-2xl">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
               className="space-y-5"
             >
               <div className="flex items-center gap-3 mb-5">
-                <motion.div 
+                <motion.div
                   whileHover={{ rotate: 180 }}
                   transition={{ duration: 0.5 }}
                   className="p-3 rounded-xl bg-gradient-to-br from-accent/20 to-accent/30"
@@ -240,7 +240,7 @@ const About = () => {
                 <h2 className="text-2xl md:text-3xl font-bold text-foreground font-amanojaku">The Journey</h2>
               </div>
 
-              <motion.p 
+              <motion.p
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
@@ -299,7 +299,7 @@ const About = () => {
                 <span className="text-xl font-bold text-foreground block mb-3 font-amanojaku">Chapter 1: The Chemical Engineer Who Loved Patterns</span>
                 My story starts at <span className="font-bold text-foreground">Jadavpur University</span>, where I spent four years learning to break down complex chemical systems into their fundamental parts. I graduated with an <span className="font-bold text-foreground">8.32 CGPA</span>, led R&D projects for <span className="font-bold text-foreground">ONGC</span>, and built hydrogen production simulations. But somewhere in those spreadsheets and simulations, I found something more fascinating than molecules—<span className="text-foreground font-bold">I found data patterns that told stories</span>.
               </p>
-              
+
               <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded-r-xl p-4 my-4">
                 <p className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2 font-autumn-brush">Key <span className="font-bold">Chemical Engineering</span> Achievements:</p>
                 <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
@@ -345,7 +345,7 @@ const About = () => {
                 <span className="text-xl font-bold text-foreground block mb-3 font-amanojaku">Chapter 3: Sharpening the Craft</span>
                 Now I'm at <a href="https://gim.ac.in" target="_blank" rel="noopener noreferrer" className="text-accent font-bold hover:text-accent/80 underline decoration-accent/50 hover:decoration-accent transition-all duration-200">Goa Institute of Management</a>, pursuing a <span className="font-bold text-foreground">PGDM in Big Data Analytics</span>. I'm learning to architect data products that don't just solve today's problems—they <span className="font-bold text-foreground">scale with tomorrow's ambitions</span>. Business intelligence, data engineering, analytics product development—I'm building the <span className="font-bold text-foreground">toolkit to create systems that matter</span>.
               </p>
-              
+
               <div className="bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 rounded-r-xl p-4 my-4">
                 <p className="text-sm font-semibold text-green-800 dark:text-green-200 mb-2 font-autumn-brush">Current Learning Focus at <span className="font-bold">GIM</span>:</p>
                 <ul className="text-sm text-green-700 dark:text-green-300 space-y-1">
